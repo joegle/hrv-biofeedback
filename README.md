@@ -1,5 +1,5 @@
 # HRV biofeedback
-@joegle / [joegle.com](http://joegle.com)
+[@joegle](https://twitter.com/Joegle) / [joegle.com](http://joegle.com)
 
 Collection of programs (written mostly in Python2) I've made for collecting live heart beat signal and processing it, suitable for prototyping heart rate 
 variability training applications.
