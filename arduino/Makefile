@@ -4,7 +4,7 @@ AR=avr-ar
 CHIP=atmega328p
 MCU=-mmcu=$(CHIP)
 CPU_SPEED=-DF_CPU=16000000UL
-LIBS=-Isrc/lib
+LIBS=-Ilib
 CFLAGS=$(MCU) $(CPU_SPEED) -Os -w -ffunction-sections -fdata-sections -fno-exceptions $(LIBS)
 
 SERIAL=/dev/ttyUSB0
