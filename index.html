@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Hrv-biofeedback by joegle</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1>Hrv-biofeedback</h1>
+        <p>Heart rate variability biofeedback toolkit</p>
+
+        <p class="view"><a href="https://github.com/joegle/hrv-biofeedback">View the Project on GitHub <small>joegle/hrv-biofeedback</small></a></p>
+
+
+        <ul>
+          <li><a href="https://github.com/joegle/hrv-biofeedback/zipball/master">Download <strong>ZIP File</strong></a></li>
+          <li><a href="https://github.com/joegle/hrv-biofeedback/tarball/master">Download <strong>TAR Ball</strong></a></li>
+          <li><a href="https://github.com/joegle/hrv-biofeedback">View On <strong>GitHub</strong></a></li>
+        </ul>
+      </header>
+      <section>
+        <h1>
+<a name="hrv-biofeedback" class="anchor" href="#hrv-biofeedback"><span class="octicon octicon-link"></span></a>HRV biofeedback</h1>
+
+<p><a href="https://twitter.com/Joegle">@joegle</a> / <a href="http://joegle.com">joegle.com</a></p>
+
+<p>Collection of programs (written mostly in Python2) I've made for collecting live heart beat signal and processing it, suitable for prototyping heart rate 
+variability training applications.</p>
+
+<p>Biofeedback is the process of gaining greater awareness of physiological functions primarily using instruments that provide information on the activity of those same systems, with a goal of being able to manipulate them at will.</p>
+
+<h2>
+<a name="links" class="anchor" href="#links"><span class="octicon octicon-link"></span></a>Links</h2>
+
+<h2>
+<a name="heart-beat-hardware" class="anchor" href="#heart-beat-hardware"><span class="octicon octicon-link"></span></a>Heart beat hardware</h2>
+
+<p>The hardware setup consists of:</p>
+
+<ul>
+<li>Arduino Duemilanove microcontroller connected to Linux server with USB cord</li>
+<li>Pulse Sensor Amped running off 5V and connected to Analog In 0 pin</li>
+<li>Pulse Sensor clipped to ear lobe</li>
+</ul><h2>
+<a name="software-and-firmware" class="anchor" href="#software-and-firmware"><span class="octicon octicon-link"></span></a>Software and Firmware</h2>
+
+<p>The Arduino is loaded with modified Pulse Sensor firmware.</p>
+
+<h2>
+<a name="python-heart-module" class="anchor" href="#python-heart-module"><span class="octicon octicon-link"></span></a>python-heart Module</h2>
+
+<p>The core of the server side data uplink is done with <code>heart.py</code> module depending on:</p>
+
+<ul>
+<li>pySerial</li>
+<li>NumPy</li>
+</ul><h3>
+<a name="usage" class="anchor" href="#usage"><span class="octicon octicon-link"></span></a>Usage</h3>
+
+<pre><code>import heart
+monitor = heart.Heartbeat_Monitor("/dev/ttyUSB0")
+monitor.start()
+</code></pre>
+
+<p>Or</p>
+
+<pre><code>$ python2 -m heart
+</code></pre>
+
+<h1>
+<a name="tips" class="anchor" href="#tips"><span class="octicon octicon-link"></span></a>Tips</h1>
+
+<div class="highlight highlight-sh"><pre><span class="nv">$ </span>stty -F /dev/ttyUSB0 cs7 cstopb -ixon raw speed 115200<span class="sb">```</span>
+<span class="nv">$ </span>cat /dev/ttyUSB0
+</pre></div>
+      </section>
+      <footer>
+        <p>This project is maintained by <a href="https://github.com/joegle">joegle</a></p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+    </div>
+    <script src="javascripts/scale.fix.js"></script>
+    
+  </body>
+</html>
