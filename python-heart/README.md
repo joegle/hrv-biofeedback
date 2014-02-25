@@ -7,6 +7,9 @@ Biofeedback is the process of gaining greater awareness of many physiological fu
 
 LINKs
 
+# Install
+
+
 ## Heart beat hardware
 The hardware setup consists of:
 
@@ -17,6 +20,8 @@ The hardware setup consists of:
 ### Pitfalls
 
 * Cold temperatures will reduce circulation in ears and prevent heart beat detection through Pulse Sensor
+* Add your username to the `uucp` group to have access to serial device or `tty`
+
 
 ## Software and Firmware
 The Arduino is loaded with modified Pulse Sensor firmware.
