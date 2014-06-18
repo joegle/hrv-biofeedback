@@ -42,6 +42,8 @@ volatile bool secondBeat = false;      // used to seed rate array so we startup 
 int pulsePin = 0;                 // Pulse Sensor purple wire connected to analog pin 0
 int blinkPin = 13;                // pin to blink led at each beat
 
+int redPin = 9;
+
 // these variables are volatile because they are used during the interrupt service routine!
 volatile int BPM;                   // used to hold the pulse rate
 volatile int Signal;                // holds the incoming raw data
@@ -49,6 +51,7 @@ volatile int IBI = 600;             // holds the time between beats, must be see
 volatile bool Pulse = false;     // true when pulse wave is high, false when it's low
 volatile bool QS = false;        // becomes true when Arduoino finds a beat.
 
+int incomingByte = 0; 
 
 void interruptSetup(){     
   TCCR2A = 0x02;     // DISABLE PWM ON DIGITAL PINS 3 AND 11, AND GO INTO CTC MODE
@@ -84,7 +87,12 @@ ISR(TIMER2_COMPA_vect){                         // triggered when Timer2 counts 
   if (N > 250){                                   // avoid high frequency noise
     if ( (Signal > thresh) && (Pulse == false) && (N > (IBI/5)*3) ){        
       Pulse = true;                               // set the Pulse flag when we think there is a pulse
+
+
       digitalWrite(blinkPin,HIGH);                // turn on pin 13 LED
+                 // turn on pin 13 LED
+      digitalWrite(10,LOW);                // turn on pin 13 LED
+      digitalWrite(11,LOW);                // turn on pin 13 LED
       IBI = sampleCounter - lastBeatTime;         // measure time between beats in mS
       lastBeatTime = sampleCounter;               // keep track of time for next pulse
 
@@ -122,6 +130,9 @@ ISR(TIMER2_COMPA_vect){                         // triggered when Timer2 counts 
 
   if (Signal < thresh && Pulse == true){   // when the values are going down, the beat is over
     digitalWrite(blinkPin,LOW);            // turn off pin 13 LED
+    
+    digitalWrite(10,HIGH);            // turn off pin 13 LED
+    digitalWrite(11,HIGH);            // turn off pin 13 LED
     Pulse = false;                         // reset the Pulse flag so we can do it again
     amp = P - T;                           // get amplitude of the pulse wave
     thresh = amp/2 + T;                    // set thresh at 50% of the amplitude
@@ -148,12 +159,25 @@ void setup(){
   //needed++;
   pinMode(blinkPin,OUTPUT);         // pin that will blink to your heartbeat!
 
+
+  pinMode(9,OUTPUT);         // pin that will blink to your heartbeat!
+  pinMode(10,OUTPUT);         // pin that will blink to your heartbeat!
+  pinMode(11,OUTPUT);         // pin that will blink to your heartbeat!
+
   interruptSetup();                 // sets up to read Pulse Sensor signal every 2mS 
 }
 
 
 
 void loop(){
+
+  if (Serial.available() > 0) {
+    incomingByte = Serial.read();
+
+    analogWrite(9,incomingByte);    
+    //Serial.println(incomingByte, DEC);
+  }
+
   if (QS == true){                       // Quantified Self flag is true when arduino finds a heartbeat
         Serial.println(IBI);
 	QS = false;                      // reset the Quantified Self flag for next time    

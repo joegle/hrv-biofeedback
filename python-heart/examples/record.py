@@ -25,7 +25,7 @@ class feedback(heart.Heart_Monitor):
             self.listen_for_beat()
 
     def on_beat(self):
-
+        self.stream.write(chr(self.beat_time%255))
         print(self.beat_time, file=self.datafile)
         print(".", end="")
         sys.stdout.flush()
@@ -41,3 +41,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

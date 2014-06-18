@@ -1,0 +1,10 @@
+# R wave intervals in milliseconds per line
+# start time: 2014-04-02-13:02:06, 1396458126.1
+778
+846
+898
+832
+802
+838
+824
+# end time: 2014-04-02-13:02:14, 1396458134.46

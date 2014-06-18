@@ -23,6 +23,9 @@ build/%.o: lib/%.cpp
 	@mkdir -p build
 	$(CXX) $< $(CFLAGS) -c -o $@ 
 
+tricolor.o: src/tricolor.cpp
+	@echo src/tricolor.cpp
+	$(CXX) $(CFLAGS)  -c $^ -o $@ 
 
 pulse.o: src/pulse.cpp
 	@echo src/pulse.cpp
@@ -32,15 +35,22 @@ firmware.elf: pulse.o libarduino.a
 	@echo Linking firmware.elf
 	$(CC) $(CFLAGS) -o $@ $^
 
+firmware1.elf: tricolor.o libarduino.a
+	@echo Linking firmware.elf
+	$(CC) $(CFLAGS) -o $@ $^
 
-firmware.hex: firmware.elf
+firmware.hex: firmware1.elf
+	@echo Converting to firmware.hex
+	avr-objcopy -O ihex -R .eeprom $^ $@
+
+111firmware.hex: firmware.elf
 	@echo Converting to firmware.hex
 	avr-objcopy -O ihex -R .eeprom $^ $@
 
 upload: firmware.hex
 	avrdude -V -F -carduino -p$(CHIP)  -b$(BAUD) -P$(SERIAL) -D -U flash:w:$^:i
 
-all: firmware.hex pulse.o libarduino.a
+all: firmware.hex pulse.o libarduino.a tricolor.o
 	@echo "SUCCESS!"
 	@echo "To load run: 'make upload'"
 	@true
