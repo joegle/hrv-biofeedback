@@ -5,7 +5,6 @@
 import numpy as np
 import serial
 import sys
-import datetime
 import time
 
 class Heart_Monitor:
@@ -62,7 +61,7 @@ class Heart_Monitor:
             return
 
         except KeyboardInterrupt:
-            sys.stderr.write("User abort\n")
+            sys.stderr.write("\nUser abort\n")
             self.on_quit()
             sys.exit()
          
