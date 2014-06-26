@@ -5,7 +5,6 @@ import datetime
 import time
 import sys
 import numpy as np
-from subprocess import call
 
 class recorder(heart.Heart_Monitor):
     """Command line tool that records the Arduino heart beat data into timestamped file"""
