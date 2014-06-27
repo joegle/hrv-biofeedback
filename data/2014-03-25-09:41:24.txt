@@ -1,2 +1,0 @@
-# R wave intervals in milliseconds per line
-# start time: 2014-03-25-09:41:24, 1395754884.09
