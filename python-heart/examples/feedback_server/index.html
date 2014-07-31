@@ -1,1 +1,168 @@
-hey
+<!DOCTYPE html>
+<meta charset="utf-8">
+<!-- https://gist.github.com/mbostock/1642989 -->
+<style>
+ 
+svg {
+  font: 10px sans-serif;
+}
+ 
+.big-blue {
+    fill: none;
+    stroke: blue;
+    stroke-width: 6px;
+    opacity:0.7;
+}
+ 
+.small-red {
+    opacity:1;
+    fill: none;
+    stroke: red;
+    stroke-width: 1px;
+}
+.big-red {
+    opacity:0.49;
+    fill: none;
+    stroke: red;
+    stroke-width: 6.5px;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+ 
+</style>
+<body>
+<script src="js/jquery.js"></script>
+<script src="js/d3.v3.min.js"></script>
+
+
+<script>
+ 
+var n = 40,
+    random = d3.random.normal(20, 7),
+    data = d3.range(n).map(random),
+    data2 = d3.range(n).map(random);
+    data3= d3.range(n).map(random);
+ 
+var margin = {top: 20, right: 20, bottom: 20, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+ 
+var x = d3.scale.linear()
+    .domain([1, n - 2])
+    .range([0, width]);
+ 
+var y = d3.scale.linear()
+    .domain([0, 260])
+    .range([height, 0]);
+ 
+var line = d3.svg.line()
+    .interpolate("basis")
+    .x(function(d, i) { return x(i); })
+    .y(function(d, i) { return y(d); });
+
+var line2 = d3.svg.line()
+    .interpolate("basis")
+    .x(function(d, i) { return x(i); })
+    .y(function(d, i) { return y(d); }); 
+
+
+var line3 = d3.svg.line()
+    .interpolate("basis")
+    .x(function(d, i) { return x(i); })
+    .y(function(d, i) { return y(d); }); 
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+ 
+svg.append("defs").append("clipPath")
+    .attr("id", "clip")
+  .append("rect")
+    .attr("width", width)
+    .attr("height", height);
+ 
+svg.append("g")
+    .attr("class", "x axis")
+    .attr("transform", "translate(0," + y(0) + ")")
+    .call(d3.svg.axis().scale(x).orient("bottom"));
+ 
+svg.append("g")
+    .attr("class", "y axis")
+    .call(d3.svg.axis().scale(y).orient("left"));
+ 
+var path = svg.append("g")
+    .attr("clip-path", "url(#clip)")
+  .append("path")
+    .datum(data)
+    .attr("class", "small-red")
+    .attr("d", line);
+ 
+var path2 = svg.append("g")
+    .attr("clip-path", "url(#clip)")
+  .append("path")
+    .datum(data2)
+    .attr("class", "big-red")
+    .attr("d", line2);
+
+var path3 = svg.append("g")
+    .attr("clip-path", "url(#clip)")
+  .append("path")
+    .datum(data3)
+    .attr("class", "big-blue")
+    .attr("d", line3);
+
+tick();
+ 
+function tick() {
+ 
+    // push a new data point onto the back
+    $.ajax({ 
+	url: "/stats.json", 
+	success: function(json){
+	    data.push(parseInt(json.std1));
+	    data2.push(parseInt(json.std2));
+	    data3.push(parseInt(json.avg)-600);
+	}, 
+	dataType: "json"
+    });
+
+  // redraw line, and slide to the left
+  path
+      .attr("d", line)
+      .attr("transform", null)
+    .transition()
+      .duration(500)
+      .ease("linear")
+      .attr("transform", "translate(" + x(0) + ",0)")
+      
+  path2
+      .attr("d", line2)
+      .attr("transform", null)
+    .transition()
+      .duration(500)
+      .ease("linear")
+      .attr("transform", "translate(" + x(0) + ",0)")
+
+  path3
+      .attr("d", line3)
+      .attr("transform", null)
+    .transition()
+      .duration(500)
+      .ease("linear")
+      .attr("transform", "translate(" + x(0) + ",0)")
+      .each("end", tick);
+
+  // pop the old data point off the front
+  data.shift();
+  data2.shift();
+  data3.shift();
+}
+
+</script>

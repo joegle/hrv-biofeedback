@@ -1,8 +1,10 @@
 #!/usr/bin/env python2
-
+from __future__ import print_function
 import heart
 import logging
+import datetime
 import thread
+import time
 import json
 import numpy as np
 from BaseHTTPServer import HTTPServer
@@ -54,9 +56,18 @@ class Monitor(heart.Heart_Monitor):
         thread.start_new_thread(self.start,())
 
     def on_beat(self):
-        print self.beat_time
+        #self.datafile.write(self.beat_time)
+        print(self.beat_time, file=self.datafile)
+        print(self.beat_time)
 
     def start(self):
+        now = datetime.datetime.now()
+        start_time = now.strftime('%Y-%m-%d-%H:%M:%S')
+        self.datafile = open(start_time+".txt","w")
+        self.datafile.write("# R wave intervals in milliseconds per line\n")
+        self.datafile.write("# Active training\n")
+        self.datafile.write("# start time: %s, %s\n"%(datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S'),time.time()))
+
         while True:
             self.listen_for_beat()
 
@@ -66,7 +77,8 @@ class Monitor(heart.Heart_Monitor):
         avg = round(np.average(self.RR_intervals[-7:]))
 
         return json.dumps({"last":self.beat_time,"std1":std1,"std2":std2,"avg":avg})
- 
+
+
 if __name__ == "__main__":
     #logging.basicConfig(format='%(asctime)s [%(levelname)s] %(message)s',level=logging.INFO)
     monitor=Monitor()
