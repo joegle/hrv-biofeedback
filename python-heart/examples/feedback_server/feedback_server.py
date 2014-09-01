@@ -74,9 +74,12 @@ class Monitor(heart.Heart_Monitor):
     def json_stats(self):
         std1= round(np.std(self.RR_intervals[-10:]))
         std2= round(np.std(self.RR_intervals[-50:]))
-        avg = round(np.average(self.RR_intervals[-7:]))
+        std3= round(np.std(self.RR_intervals[-100:]))
 
-        return json.dumps({"last":self.beat_time,"std1":std1,"std2":std2,"avg":avg})
+        avg = round(np.average(self.RR_intervals[-7:]))
+        avg2 = round(np.average(self.RR_intervals[-50:]))
+
+        return json.dumps({"last":self.beat_time,"std1":std1,"std2":std2,"avg":avg,"avg2":avg2,"std3":std3})
 
 
 if __name__ == "__main__":
