@@ -1,10 +1,15 @@
+#!/usr/bin/env python2
 import numpy as np
 import datetime
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from matplotlib.dates import date2num
-import matplotlib.cbook as cbook
 from matplotlib.ticker import MaxNLocator
+
+# Script generates histogram of heart rate recording sessions
+#   ls data/* > files.txt
+#   python2 activity_plot.py
+
 
 f=open("files.txt","r")
 dates=[]
