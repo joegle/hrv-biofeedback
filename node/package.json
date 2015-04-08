@@ -1,0 +1,23 @@
+{
+  "name": "hrv-node",
+  "version": "1.0.0",
+  "description": "hrv biofeedback web client",
+  "main": "hrv.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/joegle/hrv-biofeedback.git/"
+  },
+  "keywords": [
+    "hrv",
+    "biofeedback",
+    "webgl",
+    "arduino",
+    "heartrate",
+    "heart"
+  ],
+  "author": "Joseph Wright",
+  "license": "MIT"
+}
