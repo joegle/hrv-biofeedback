@@ -1,0 +1,14 @@
+# R wave intervals in milliseconds per line
+# start time: 2015-12-02-18:51:15, 1449100275.99
+680
+698
+770
+846
+866
+878
+890
+908
+910
+882
+858
+868
