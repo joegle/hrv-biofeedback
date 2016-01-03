@@ -45,3 +45,9 @@ To read your serial stream:
 $ stty -F /dev/ttyUSB0 cs7 cstopb -ixon raw speed 115200
 $ cat /dev/ttyUSB0
 ```
+
+Permission denied opening serial connection device /dev/ttyUSB0:
+```sh
+# usermod -a -G uucp yourregusername
+$ logout and login for group permissions to update
+```
