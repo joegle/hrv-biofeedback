@@ -57,10 +57,13 @@ class recorder(heart.Heart_Monitor):
 
     def session_summary(self):
         print("\n= Session Summary =")
-        print("File:", self.datafile.name)
-        print(len(self.RR_intervals), "Beats")
-        print(np.sum(self.RR_intervals), "ms total")
-        print(60000/np.average(self.RR_intervals), "BPM")
+        
+        print("File: {0}".format(self.datafile.name))
+        print("Beats: {0:>6}".format(len(self.RR_intervals)))
+        print("Time: {0:>7} minutes".format(round(np.sum(self.RR_intervals)/60000,2)))
+        print("Mean: {0:>7}".format(round(np.average(self.RR_intervals), 2)))
+        print("STD: {0:>8}".format(round(np.std(self.RR_intervals), 2)))
+        print("BPM: {0:>8}".format(round(60000/np.average(self.RR_intervals), 2)))
 
     def on_quit(self):
         self.datafile.write("# end time: %s, %s\n"%(datetime.datetime.now().strftime('%Y-%m-%d-%H:%M:%S'),time.time()))
@@ -68,14 +71,20 @@ class recorder(heart.Heart_Monitor):
         self.session_summary()
         self.datafile.close()
 
+guide = """# Examples
+./record.py sample.txt
+./record.py /dev/ttyUSB0
+./record.py /dev/usbmodem1411
+"""
 
-parser = argparse.ArgumentParser(description='Record heart beat intervals')
+parser = argparse.ArgumentParser(description='Record heart beat intervals',
+                                 formatter_class=argparse.RawDescriptionHelpFormatter,
+                                 epilog=guide)
 
 parser.add_argument('-m','--message', help='Log a message')
 parser.add_argument('-t','--test', help="Test run", action='store_true')
-parser.add_argument('source',help="Input source") # nargs='*' use '*' for 0 or more use '+' for 1 or more args (instead of 0 or more)
+parser.add_argument('source',help="Serial device or test data file (/dev/ttyUSB0, /dev/tty.usbmodem1411, sample.txt)")
 
-#        serial_device="/dev/ttyUSB0"
 args = parser.parse_args()
 
 
