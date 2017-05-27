@@ -1,7 +1,7 @@
 CC=avr-gcc
 CXX=avr-g++
 AR=avr-ar
-CHIP=atmega328p
+CHIP=attiny85
 MCU=-mmcu=$(CHIP)
 CPU_SPEED=-DF_CPU=16000000UL
 LIBS=-Ilib
@@ -10,7 +10,7 @@ CFLAGS=$(MCU) $(CPU_SPEED) -Os -w -ffunction-sections -fdata-sections -fno-excep
 SERIAL=/dev/ttyUSB0
 BAUD=57600
 
-OBJS = WInterrupts.o wiring_analog.o wiring.o wiring_digital.o wiring_pulse.o wiring_shift.o CDC.o HardwareSerial.o HID.o IPAddress.o main.o new.o Print.o Stream.o Tone.o USBCore.o WMath.o WString.o
+OBJS = WInterrupts.o wiring_analog.o wiring.o wiring_digital.o wiring_pulse.o wiring_shift.o CDC.o HardwareSerial.o HID.o  main.o new.o Print.o Stream.o Tone.o USBCore.o WMath.o WString.o
 
 libarduino.a: $(foreach obj,$(OBJS),build/$(obj))
 	$(AR) crs libarduino.a build/*

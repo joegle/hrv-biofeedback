@@ -53,15 +53,17 @@ volatile bool QS = false;        // becomes true when Arduoino finds a beat.
 
 int incomingByte = 0; 
 
-void interruptSetup(){     
-  TCCR2A = 0x02;     // DISABLE PWM ON DIGITAL PINS 3 AND 11, AND GO INTO CTC MODE
-  TCCR2B = 0x06;     // DON'T FORCE COMPARE, 256 PRESCALER 
-  OCR2A = 0X7C;      // SET THE TOP OF THE COUNT TO 124 FOR 500Hz SAMPLE RATE
-  TIMSK2 = 0x02;     // ENABLE INTERRUPT ON MATCH BETWEEN TIMER2 AND OCR2A
-  sei();             // MAKE SURE GLOBAL INTERRUPTS ARE ENABLED      
-} 
+// If you are using a FIO or LillyPad Arduino or Arduino Pro Mini 3V or Arduino SimpleSnap
+//   or other Arduino that has ATmega168 or ATmega328 with 8MHz oscillator,
+//   change the line TCCR2B = 0x06 to TCCR2B = 0x05.
 
-
+void interruptSetup(){
+  TCCR0A = 0x02;     // DISABLE PWM ON DIGITAL PINS 3 AND 11, AND GO INTO CTC MODE
+  TCCR0B = 0x06;     // DON'T FORCE COMPARE, 256 PRESCALER
+  OCR0A = 0X7C;      // SET THE TOP OF THE COUNT TO 124 FOR 500Hz SAMPLE RATE
+  TIMSK = 0x02;     // ENABLE INTERRUPT ON MATCH BETWEEN TIMER2 AND OCR2A
+  sei();             // MAKE SURE GLOBAL INTERRUPTS ARE ENABLED
+}
 
 // THIS IS THE TIMER 2 INTERRUPT SERVICE ROUTINE. 
 // Timer 2 makes sure that we take a reading every 2 miliseconds
@@ -170,13 +172,6 @@ void setup(){
 
 
 void loop(){
-
-  if (Serial.available() > 0) {
-    incomingByte = Serial.read();
-
-    analogWrite(9,incomingByte);    
-    //Serial.println(incomingByte, DEC);
-  }
 
   if (QS == true){                       // Quantified Self flag is true when arduino finds a heartbeat
         Serial.println(IBI);
